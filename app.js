@@ -1,11 +1,18 @@
 // ? 1- Tüm form elementlerini seçin, Butonları seçin
 //---------------------------------------------------
 
-const userName = document.getElementById(`username`);
-const email = document.getElementById(`email`);
-const password = document.getElementById(`password`);
-const validateButton = document.getElementById(`validateBtn`);
-const resetButton = document.getElementById(`resetBtn`);
+// const userName = document.getElementById(`username`);
+// const email = document.getElementById(`email`);
+// const password = document.getElementById(`password`);
+// const validateButton = document.getElementById(`validateBtn`);
+// const resetButton = document.getElementById(`resetBtn`);
+
+const byId = (id) => document.getElementById(id);
+const userName = byId("username");
+const email = byId("email");
+const password = byId("password");
+const validateButton = byId("validateBtn");
+const resetButton = byId("resetBtn");
 
 validateButton.addEventListener(`click`, function () {
   // Username Kontrolü
