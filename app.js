@@ -18,7 +18,6 @@ const warningMessage = byId("warningMessage");
 const isPasswordStrong = byId("isPasswordStrong");
 
 validateButton.addEventListener(`click`, function () {
-  
   // Username Kontrolü
   if (userName.value.trim().length >= 3) {
     userName.classList.add("input-success");
@@ -32,7 +31,7 @@ validateButton.addEventListener(`click`, function () {
   }
 
   // Email Kontrolü
-  if (email.value.includes("@") && email.value.includes(".")) {
+  if (isValidEmail(email.value)) {
     console.log("Eposta geçerli...");
     email.classList.add("input-success");
   } else if (email.value.trim() === "") {
@@ -77,14 +76,13 @@ userName.addEventListener(`input`, function () {
   } else {
     warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
     warningTitle.style.cssText = `font-size : 14px`;
-    warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. \nKullanıcı adı en az 3 karakter olmalıdır.`;
+    warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. Kullanıcı adı en az 3 karakter olmalıdır.`;
     warningMessage.style.cssText = `font-size : 12px`;
     userName.classList.add("input-error");
   }
 
   if (userName.value.trim().length === 0 || userName.value.trim().length >= 3) {
-    warningTitle.textContent = "";
-    warningMessage.textContent = "";
+    warningTestReset();
     return;
   }
 });
@@ -92,24 +90,19 @@ userName.addEventListener(`input`, function () {
 // Runtime Eposta Kontrolü
 
 email.addEventListener(`input`, function () {
-  email.className = "";
-  if (email.value.includes("@") && email.value.includes(".")) {
+  email.classList.remove("input-success", "input-error");
+  if (isValidEmail(email.value)) {
     email.classList.add("input-success");
   } else {
     warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
     warningTitle.style.cssText = `font-size : 14px`;
-    warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. \nÖrnek : test@gmail.com`;
+    warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. Örnek : test@gmail.com`;
     warningMessage.style.cssText = `font-size : 12px`;
     email.classList.add("input-error");
   }
 
-  if (
-    email.value.includes("@") ||
-    email.value.includes(".") ||
-    email.value.length === 0
-  ) {
-    warningTitle.textContent = "";
-    warningMessage.textContent = "";
+  if (email.value.length === 0 || isValidEmail(email.value)) {
+    warningTestReset();
     return;
   }
 });
@@ -146,35 +139,57 @@ password.addEventListener(`input`, function () {
     case 1:
       isPasswordStrong.innerText = `🔴 Şifre zayıf`;
       password.classList.add("input-error");
-      warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
-    warningTitle.style.cssText = `font-size : 14px`;
-    warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. <br> - Şifre en az 1 büyük harf içermelidir.<br> - Şifre en az 1 sayı içermelidir.<br> - Şifre en az 1 küçük harf içermelidir.<br> - Şifre en az 1 özel karakter içermelidir. (!,.-) <br> - Yaygın şifreler kullanmayınız. (123, 123456, password, abc, 111111, qwerty)`;
-    warningMessage.style.cssText = `font-size : 12px`;
-    password.classList.add("input-error");
+      warnungPassword();
       break;
     case 2:
       isPasswordStrong.innerHTML = `🔴 Şifre zayıf`;
       password.classList.add("input-error");
+      warnungPassword();
       break;
     case 3:
       isPasswordStrong.innerHTML = `🟠 Şifre orta`;
       password.classList.add("input-warning");
+      warnungPassword();
       break;
     case 4:
-      isPasswordStrong.innerHTML = `🟠 Şifre güçlü`;
+      isPasswordStrong.innerHTML = `🟢 Şifre güçlü`;
       password.classList.add("input-success");
+      warningTestReset();
+
       break;
     default:
       isPasswordStrong.innerHTML = `🟢 Şifre güçlü`;
       password.classList.add("input-success");
-
+      warningTestReset();
       break;
   }
 
   if (password.value.length === 0) {
-    warningTitle.textContent = "";
-    warningMessage.textContent = "";
+    warningTestReset();
     isPasswordStrong.textContent = "";
     return;
   }
 });
+
+//Şifre uyarısı
+
+function warnungPassword() {
+  warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
+  warningTitle.style.cssText = `font-size : 14px`;
+  warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. <br> - Şifre en az 1 büyük harf içermelidir.<br> - Şifre en az 1 sayı içermelidir.<br> - Şifre en az 1 küçük harf içermelidir.<br> - Şifre en az 1 özel karakter içermelidir. (!,.-) <br> - Yaygın şifreler kullanmayınız. (123, 123456, password, abc, 111111, qwerty)`;
+  warningMessage.style.cssText = `font-size : 12px`;
+}
+
+// Uyarı resetleme
+
+function warningTestReset() {
+  warningTitle.textContent = "";
+  warningMessage.textContent = "";
+}
+
+//Email-Regex kontrolü
+
+function isValidEmail(value) {
+  const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  return regex.test(value.trim());
+}
