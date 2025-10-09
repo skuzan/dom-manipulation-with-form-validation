@@ -20,37 +20,37 @@ const isPasswordStrong = byId("isPasswordStrong");
 validateButton.addEventListener(`click`, function () {
   // Username Kontrolü
   if (userName.value.trim().length >= 3) {
-    userName.classList.add("input-success");
+    inputState(userName, "succes");
     console.log(`Kullanıcı adı geçerli`);
   } else if (userName.value.trim() === "") {
-    userName.classList.add("input-warning");
+    inputState(userName, "warning");
     console.log(`Kullanıcı adı boş olamaz`);
   } else {
-    userName.classList.add("input-error");
+    inputState(userName, "error");
     console.log("Kullanıcı adı en az 3 karakter olmalı");
   }
 
   // Email Kontrolü
   if (isValidEmail(email.value)) {
     console.log("Eposta geçerli...");
-    email.classList.add("input-success");
+    inputState(email, "succes");
   } else if (email.value.trim() === "") {
-    email.classList.add("input-warning");
+    inputState(email, "warning");
     console.log(`Eposta adresi boş olamaz.`);
   } else {
-    email.classList.add("input-error");
+    inputState(email, "error");
     console.log(`E-posta adresi yanlış. Örnek: test@gmail.com"`);
   }
 
   // Password Kontrolü
   if (password.value.trim().length >= 6) {
-    password.classList.add("input-success");
+    inputState(password, "succes");
     console.log(`Şifre geçerli`);
   } else if (password.value.trim() === "") {
-    password.classList.add("input-warning");
+    inputState(password, "warning");
     console.log(`Şifre boş olamaz`);
   } else {
-    password.classList.add("input-error");
+    inputState(password, "error");
     console.log("Şifre en az 6 karakter olmalı");
   }
 });
@@ -72,13 +72,13 @@ resetButton.addEventListener(`click`, function () {
 userName.addEventListener(`input`, function () {
   userName.className = "";
   if (userName.value.trim().length >= 3) {
-    userName.classList.add("input-success");
+    inputState(userName, "success");
   } else {
     warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
     warningTitle.style.cssText = `font-size : 14px`;
     warningMessage.innerHTML = `Bazı alanlar eksik veya hatalı. Lütfen kırmızıyla işaretli kısımları düzeltin. Kullanıcı adı en az 3 karakter olmalıdır.`;
     warningMessage.style.cssText = `font-size : 12px`;
-    userName.classList.add("input-error");
+    inputState(userName, "error");
   }
 
   if (userName.value.trim().length === 0 || userName.value.trim().length >= 3) {
@@ -92,7 +92,7 @@ userName.addEventListener(`input`, function () {
 email.addEventListener(`input`, function () {
   email.classList.remove("input-success", "input-error");
   if (isValidEmail(email.value)) {
-    email.classList.add("input-success");
+    inputState(email, "success");
   } else {
     warningTitle.innerHTML = "⚠️ Lütfen Bilgilerinizi Kontrol Edin";
     warningTitle.style.cssText = `font-size : 14px`;
@@ -138,34 +138,34 @@ password.addEventListener(`input`, function () {
     case 0:
     case 1:
       isPasswordStrong.innerText = `🔴 Şifre zayıf`;
-      password.classList.add("input-error");
+      inputState(password, "error");
       warnungPassword();
       break;
     case 2:
       isPasswordStrong.innerHTML = `🔴 Şifre zayıf`;
-      password.classList.add("input-error");
+      inputState(password, "error");
       warnungPassword();
       break;
     case 3:
       isPasswordStrong.innerHTML = `🟠 Şifre orta`;
-      password.classList.add("input-warning");
+      inputState(password, "warning");
       warnungPassword();
       break;
     case 4:
       isPasswordStrong.innerHTML = `🟠 Şifre orta`;
-      password.classList.add("input-success");
+      inputState(password, "warning");
       warnungPassword();
 
       break;
     case 5:
       isPasswordStrong.innerHTML = `🟢 Şifre güçlü`;
-      password.classList.add("input-success");
+      inputState(password, "succes");
       warningTestReset();
 
       break;
     default:
       isPasswordStrong.innerHTML = `🟢 Şifre güçlü`;
-      password.classList.add("input-success");
+      inputState(password, "succes");
       warningTestReset();
       break;
   }
@@ -198,4 +198,24 @@ function warningTestReset() {
 function isValidEmail(value) {
   const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   return regex.test(value.trim());
+}
+
+//
+
+function inputState(element, state) {
+  element.classList.remove("input-success", "input-error", "input-warning");
+  switch (state) {
+    case "success":
+      element.classList.add("input-success");
+      break;
+    case "error":
+      element.classList.add("input-error");
+      break;
+    case "warning":
+      element.classList.add("input-warning");
+      break;
+
+    default:
+      break;
+  }
 }
