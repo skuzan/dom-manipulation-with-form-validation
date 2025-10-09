@@ -129,7 +129,7 @@ password.addEventListener(`input`, function () {
 
   if (/[0-9]/.test(password.value)) score++;
 
-  if (/[^A-Za-z0-9]/.test(password.value)) score++;
+  if (/[!@#$%^&*(),.?":{}|<>_\-+=~]/.test(password.value)) score++;
 
   if (commonPasswords.includes(password.value.toLowerCase()))
     alert(`Yaygın şifreler kullanmayınız...`);
@@ -152,6 +152,12 @@ password.addEventListener(`input`, function () {
       warnungPassword();
       break;
     case 4:
+      isPasswordStrong.innerHTML = `🟠 Şifre orta`;
+      password.classList.add("input-success");
+      warnungPassword();
+
+      break;
+    case 5:
       isPasswordStrong.innerHTML = `🟢 Şifre güçlü`;
       password.classList.add("input-success");
       warningTestReset();
