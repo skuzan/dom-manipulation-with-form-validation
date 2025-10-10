@@ -1,11 +1,4 @@
 // ? 1- Tüm form elementlerini seçin, Butonları seçin
-//---------------------------------------------------
-
-// const userName = document.getElementById(`username`);
-// const email = document.getElementById(`email`);
-// const password = document.getElementById(`password`);
-// const validateButton = document.getElementById(`validateBtn`);
-// const resetButton = document.getElementById(`resetBtn`);
 
 const byId = (id) => document.getElementById(id);
 const userName = byId("username");
@@ -59,18 +52,17 @@ validateButton.addEventListener(`click`, function () {
 
 resetButton.addEventListener(`click`, function () {
   userName.value = "";
-  userName.className = "";
+  userName.className = "form-control";
   email.value = "";
-  email.className = "";
+  email.className = "form-control";
   password.value = "";
-  password.className = "";
+  password.className = "form-control";
   isPasswordStrong.textContent = "";
 });
 
 // Runtime username Kontrolü
 
 userName.addEventListener(`input`, function () {
-  userName.className = "";
   if (userName.value.trim().length >= 3) {
     inputState(userName, "success");
   } else {
@@ -200,7 +192,7 @@ function isValidEmail(value) {
   return regex.test(value.trim());
 }
 
-//
+// Input Warning Fonksiyonu
 
 function inputState(element, state) {
   element.classList.remove("input-success", "input-error", "input-warning");
